@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from . models import Apps
+from . models import Apps,TaskImage
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -20,6 +20,11 @@ class UserSerializer(serializers.ModelSerializer):
 class AppSerializer(serializers.ModelSerializer):
     class Meta:
         model = Apps
+        fields = '__all__'
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskImage
         fields = '__all__'
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
