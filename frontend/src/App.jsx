@@ -5,8 +5,10 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
+import AppDetail from './components/AppDetail';
 import ProtectedRoute from "./components/ProtectedRoute";
 import './output.css';
+import './input.css';
 
 function Logout() {
   localStorage.clear();
@@ -22,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/app/:id" element={<AppDetail />} />
 
         <Route
           path="/"

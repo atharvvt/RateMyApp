@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { PlusCircle, Trash2, CircleUserRound, Star, ClipboardList, LogOut } from "lucide-react";
+import { PlusCircle, Trash2, Star, User, ClipboardList, LogOut } from "lucide-react";
 import api from '../api'
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from "react-router";
 
 
 function Home() {
@@ -63,7 +63,7 @@ function Home() {
             {/* Header */}
             <header className="bg-white shadow">
                 <div className="max-w-7xl mx-auto py-4 px-6">
-                    <h1 className="text-2xl font-semibold text-gray-700">Hello User {userName}</h1>
+                    <h1 className="text-2xl font-semibold text-gray-700">Hello {userName}</h1>
                 </div>
             </header>
 
@@ -84,7 +84,7 @@ function Home() {
                             onClick={() => setShowAddForm(false)}
                             className="flex items-center px-6 py-2 text-indigo-600 hover:bg-indigo-50 w-full text-left"
                         >
-                            <CircleUserRound className="w-4 h-4 mr-2" />
+                            <User className="w-4 h-4 mr-2" />
                             <span>Profile</span>
                         </button>
                         <button
@@ -198,19 +198,37 @@ function Home() {
                             {apps.map((app) => (
                                 <div key={app.id} className="bg-white rounded-lg shadow p-6">
                                     <div className="flex justify-between items-start">
-                                        <div>
-                                            <img
-                                                src={app.image}
-                                                alt={app.app_title}
-                                                className="w-full h-48 object-cover"
-                                            />
+                                        <div className="w-full">
+                                            {app.app_logo ? (
+                                                <img
+                                                    src={app.app_logo}
+                                                    alt={app.app_title}
+                                                    className="w-full h-48 object-cover rounded-lg mb-4"
+                                                    onError={(e) => {
+                                                        e.target.src = '/placeholder-image.png';
+                                                        e.target.onerror = null;
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                                                    <span className="text-gray-400">No image</span>
+                                                </div>
+                                            )}
                                             <h3 className="text-lg font-semibold">{app.app_title}</h3>
-
                                             <p className="text-sm text-gray-600">{app.app_category} - {app.app_sub_catagory}</p>
                                             <p className="text-sm text-gray-600 mt-2">Points: {app.app_points}</p>
-                                            <a href={app.app_link} className="text-indigo-600 text-sm hover:underline mt-2 block">
-                                                View App
-                                            </a>
+                                            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                                                <div
+                                                    className="bg-blue-600 h-2.5 rounded-full"
+                                                    style={{ width: `${app.app_points}%` }}
+                                                ></div>
+                                            </div>
+                                            <Link
+                                                to={`/app/${app.id}`}
+                                                className="text-indigo-600 text-sm hover:underline mt-2 block"
+                                            >
+                                                View Details
+                                            </Link>
                                         </div>
                                         <button
                                             onClick={() => deleteApp(app.id)}
@@ -219,12 +237,6 @@ function Home() {
                                             <Trash2 className="w-5 h-5" />
                                         </button>
                                     </div>
-
-
-
-
-
-
                                 </div>
                             ))}
                         </div>

@@ -30,7 +30,9 @@ function Form({ route, method }) {
                 // Store tokens and user info
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                sessionStorage.setItem('is_staff',res.data.is_staff)
                 sessionStorage.setItem("username", res.data.username);
+
         
                 console.log(res.data)
                 // Redirect based on is_staff status
