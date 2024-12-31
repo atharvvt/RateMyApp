@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ArrowLeft, Tag, ExternalLink, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeftIcon, TagIcon, ExternalLinkIcon, UploadIcon } from 'lucide-react';
 import api from '../api';
+import '../styles/appdetail.css';
 
 const AppDetailPage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -83,49 +84,43 @@ const AppDetailPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+      <div className="loading-spinner">
+        <div className="spinner" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+    <div className="container">
+      <div className="header">
+        <div className="header-content">
           <button
             onClick={() => window.location.href = sessionStorage.getItem('is_staff') === 'true' ? '/admin' : '/'}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            className="back-button"
           >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="font-medium">Back to Dashboard</span>
+            <ArrowLeftIcon className="icon" />
+            <span>Back to Dashboard</span>
           </button>
         </div>
       </div>
 
       {app && (
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          {/* App Info Card */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-            <div className="flex items-center gap-8">
-              <div className="w-32 h-32 flex-shrink-0 bg-gray-50 rounded-2xl p-4">
-                <img
-                  src={app.app_logo}
-                  alt={app.app_title}
-                  className="w-full h-full object-contain"
-                />
+        <div className="main-content">
+          <div className="app-card">
+            <div className="app-header">
+              <div className="app-logo">
+                <img src={app.app_logo} alt={app.app_title} />
               </div>
-              
-              <div className="flex-grow">
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">{app.app_title}</h1>
-                <div className="flex flex-wrap gap-4 mb-4">
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-blue-50 text-blue-700">
-                    <Tag className="h-4 w-4" />
+
+              <div className="app-info">
+                <h1 className="app-title">{app.app_title}</h1>
+                <div className="tags-container">
+                  <span className="tag tag-primary">
+                    <TagIcon className="icon" />
                     {app.app_category}
                   </span>
                   {app.app_sub_catagory && (
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-gray-50 text-gray-600">
+                    <span className="tag tag-secondary">
                       {app.app_sub_catagory}
                     </span>
                   )}
@@ -134,50 +129,43 @@ const AppDetailPage = () => {
                   href={app.app_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                  className="website-link"
                 >
-                  <ExternalLink className="h-4 w-4" />
+                  <ExternalLinkIcon className="icon" />
                   Visit Website
                 </a>
               </div>
 
-              <div className="flex-shrink-0">
-                <div className="inline-flex items-center px-6 py-3 bg-green-50 text-green-700 rounded-full text-lg font-semibold">
+              <div className="points-container">
+                <span className="points-badge">
                   {app.app_points} Points
-                </div>
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Screenshots Grid */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Task Screenshots</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="app-card">
+            <h2 className="section-title">Task Screenshots</h2>
+
+            <div className="screenshots-grid">
               {appTaskImages.map((image, index) => (
-                <div key={index} className="relative group">
-                  <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-                    <img
-                      src={image.image}
-                      alt={`Screenshot ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+                <div key={index} className="screenshot-card">
+                  <div className="screenshot-aspect">
+                    <img src={image.image} alt={`Screenshot ${index + 1}`} />
                   </div>
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg" />
                 </div>
               ))}
             </div>
 
-            {/* Upload Section */}
-            <div className="border-2 border-dashed border-gray-200 rounded-xl p-8">
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={(e) => e.preventDefault()}
-                onDragEnter={() => setIsDragActive(true)}
-                onDragLeave={() => setIsDragActive(false)}
-                onDrop={handleDrop}
-                className={`flex flex-col items-center justify-center text-center transition-all duration-200 cursor-pointer ${isDragActive ? 'bg-blue-50' : 'hover:bg-gray-50'}`}
-              >
+            <div 
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={() => setIsDragActive(true)}
+              onDragLeave={() => setIsDragActive(false)}
+              onDrop={handleDrop}
+              className={`upload-zone ${isDragActive ? 'active' : ''}`}
+            >
+              <div className="upload-content">
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -185,19 +173,22 @@ const AppDetailPage = () => {
                   accept="image/*"
                   className="hidden"
                 />
-                
-                <div className="rounded-full bg-blue-50 p-4 mb-4">
-                  <ImageIcon className="h-8 w-8 text-blue-600" />
+
+                <div className="upload-icon-container">
+                  <UploadIcon className="upload-icon" />
                 </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Add New Screenshot</h3>
-                
-                <p className="text-sm text-gray-500 mb-2">Drop your image here or click to browse</p>
-                
+
+                <h3 className="upload-title">Add New Screenshot</h3>
+                <p className="upload-text">Drop your image here or click to browse</p>
+
                 {uploadStatus && (
-                  <p className={`text-sm mt-2 ${uploadStatus === 'uploading' ? 'text-blue-600' : uploadStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-                    {uploadStatus === 'uploading' ? 'Uploading...' : uploadStatus === 'success' ? 'Upload successful!' : 'Upload failed. Please try again.'}
-                  </p>
+                  <div className={`upload-status ${uploadStatus}`}>
+                    <p>
+                      {uploadStatus === 'uploading' ? 'Uploading...' : 
+                       uploadStatus === 'success' ? 'Upload successful!' : 
+                       'Upload failed. Please try again.'}
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
