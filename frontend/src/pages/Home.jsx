@@ -31,8 +31,10 @@ function Home() {
     const deleteApp = (id) => {
         api.delete(`/api/apps/${id}/`)
             .then((res) => {
-                if (res.status === 204) alert("App Delete")
-                else alert("failed To Delete App")
+                if (res.status === 204) {
+                    alert("App Delete")
+                    getApp();
+                } else alert("failed To Delete App")
             }).catch((error) => alert(error))
         getApp();
     }
