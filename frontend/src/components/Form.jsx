@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
+import { Loader2 } from 'lucide-react';
 
 function Form({ route, method }) {
     const [username, setUsername] = useState("");
@@ -42,6 +43,10 @@ function Form({ route, method }) {
                     navigate("/"); // User dashboard route
                 }
             
+            }
+            else{
+                navigate("/login");
+                alert("Register Successfully")
             }
             
         } catch (error) {
